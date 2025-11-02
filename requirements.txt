@@ -7,3 +7,4 @@ python-dotenv
 PyYAML
 neo4j
 pyjwt
+networkx>=3.0  
