@@ -26,8 +26,9 @@ services:
       # Mount Python code as volumes for hot-reloading
       - ./app:/app/app:ro
       - ./config.yaml:/app/config.yaml:ro
-      - ./output:/app/output
+      # Shared output volume (binds to host via named volume)
       - shared_output:/shared/output
+      - shared_output:/app/output
       - atomspace_logs:/app/logs
     depends_on:
       neo4j:
@@ -116,6 +117,7 @@ volumes:
     driver: local
   shared_output:
     external: true
+    name: shared_output
 
 networks:
   atomspace-network:
