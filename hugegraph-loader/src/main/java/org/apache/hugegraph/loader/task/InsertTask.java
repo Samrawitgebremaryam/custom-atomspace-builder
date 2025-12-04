@@ -32,6 +32,7 @@ import org.apache.hugegraph.loader.metrics.LoadMetrics;
 import org.apache.hugegraph.loader.metrics.LoadSummary;
 import org.apache.hugegraph.loader.writer.MeTTaWriter;
 import org.apache.hugegraph.loader.writer.NetworkXWriter;
+import org.apache.hugegraph.loader.writer.NetworkXWriter;
 import org.apache.hugegraph.loader.writer.Neo4jCSVWriter;
 import org.apache.hugegraph.loader.writer.Writer;
 import org.apache.hugegraph.structure.GraphElement;
@@ -46,14 +47,14 @@ public abstract class InsertTask implements Runnable {
 
     public static final Set<String> UNACCEPTABLE_EXCEPTIONS = ImmutableSet.of(
             "class java.lang.IllegalArgumentException"
-    );
+            );
 
     public static final String[] UNACCEPTABLE_MESSAGES = {
-        // org.apache.http.conn.HttpHostConnectException
-        "Connection refused",
-        "The server is being shutting down",
-        "not allowed to insert, because already exist a vertex " +
-        "with same id and different label"
+            // org.apache.http.conn.HttpHostConnectException
+            "Connection refused",
+            "The server is being shutting down",
+            "not allowed to insert, because already exist a vertex " +
+                    "with same id and different label"
     };
 
     protected final LoadContext context;
@@ -66,7 +67,7 @@ public abstract class InsertTask implements Runnable {
     protected Writer writer;
 
     public InsertTask(LoadContext context, InputStruct struct,
-                      ElementMapping mapping, List<Record> batch) {
+            ElementMapping mapping, List<Record> batch) {
         assert batch != null;
         this.context = context;
         this.struct = struct;
@@ -148,7 +149,7 @@ public abstract class InsertTask implements Runnable {
             this.writer.writeNodes(batch);
         } else {
             // client.graph().addEdges((List<Edge>) (Object) elements,
-                                    // checkVertex);
+            // checkVertex);
             this.writer.writeEdges(batch);
         }
     }
@@ -162,16 +163,16 @@ public abstract class InsertTask implements Runnable {
         if (this.type().isVertex()) {
             BatchVertexRequest.Builder req = new BatchVertexRequest.Builder();
             req.vertices((List<Vertex>) (Object) elements)
-                .updatingStrategies(this.mapping.updateStrategies())
-                .createIfNotExist(true);
+                    .updatingStrategies(this.mapping.updateStrategies())
+                    .createIfNotExist(true);
 
             client.graph().updateVertices(req.build());
         } else {
             BatchEdgeRequest.Builder req = new BatchEdgeRequest.Builder();
             req.edges((List<Edge>) (Object) elements)
-                .updatingStrategies(this.mapping.updateStrategies())
-                .checkVertex(checkVertex)
-                .createIfNotExist(true);
+                    .updatingStrategies(this.mapping.updateStrategies())
+                    .checkVertex(checkVertex)
+                    .createIfNotExist(true);
 
             client.graph().updateEdges(req.build());
         }
