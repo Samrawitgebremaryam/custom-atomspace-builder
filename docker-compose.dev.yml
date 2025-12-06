@@ -28,7 +28,7 @@ services:
       - ./config.yaml:/app/config.yaml:ro
       - ./output:/app/output
       - atomspace_logs:/app/logs
-      - shared_output:/shared/output  # API writes CSV files here
+      - ./output:/shared/output  # API writes CSV files here
     depends_on:
       neo4j:
         condition: service_healthy
@@ -66,7 +66,7 @@ services:
       - neo4j_data:/data
       - neo4j_logs:/logs
       # IMPORTANT: Mount shared_output as subdirectory of Neo4j's import directory
-      - shared_output:/var/lib/neo4j/import/shared/output
+      - ./output:/var/lib/neo4j/import/shared/output
       - neo4j_plugins:/plugins
     networks:
       - atomspace-network
